@@ -7,7 +7,7 @@ class BotonTurnoController extends ChangeNotifier {
   bool get getTurnoBTN => _turnoBTN;
   void setTurnoBTN(bool estado) {
     _turnoBTN = estado;
-    print('EL getTurnoBTN es: $_turnoBTN');
+    print('========================> EL getTurnoBTN es: $_turnoBTN');
     notifyListeners();
   }
 }

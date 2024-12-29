@@ -799,7 +799,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 2.0.1',
+              'Ver: 2.0.2',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -3102,7 +3102,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             color: Colors.white,
             shape: BoxShape.circle,
             border: Border.all(
-              color: isTurnoActivo ? Colors.green : Colors.white,
+              color: valueTurno.getTurnoBTN ? Colors.green : Colors.white,
               width: 2.0,
             ),
           ),
@@ -3110,10 +3110,11 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           child: MaterialButton(
             shape: const CircleBorder(),
             elevation: 5.0,
-            color: isTurnoActivo ? Colors.green : Colors.grey.shade300,
-            splashColor: isTurnoActivo ? Colors.lightGreen : Colors.black45,
+            color: valueTurno.getTurnoBTN ? Colors.green : Colors.grey.shade300,
+            splashColor:
+                valueTurno.getTurnoBTN ? Colors.lightGreen : Colors.black45,
             onPressed: () {
-              if (isTurnoActivo) {
+              if (valueTurno.getTurnoBTN) {
                 _modalFinalizarTurno(size);
               } else {
                 _modalInciaTurno(size);
@@ -3123,19 +3124,19 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(
-                  isTurnoActivo
+                  valueTurno.getTurnoBTN
                       ? Icons.check_circle_outline
                       : Icons.remove_circle_outline,
-                  color: isTurnoActivo ? Colors.white : Colors.black,
+                  color: valueTurno.getTurnoBTN ? Colors.white : Colors.black,
                   size: size.iScreen(4.0),
                 ),
                 SizedBox(height: size.iScreen(1.0)),
                 Text(
-                  isTurnoActivo ? 'TURNO ACTIVO' : 'TURNO INACTIVO',
+                  valueTurno.getTurnoBTN ? 'TURNO ACTIVO' : 'TURNO INACTIVO',
                   textAlign: TextAlign.center,
                   style: GoogleFonts.roboto(
                     fontSize: size.iScreen(1.6),
-                    color: isTurnoActivo ? Colors.white : Colors.black,
+                    color: valueTurno.getTurnoBTN ? Colors.white : Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -3933,6 +3934,8 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       showDialog(
           context: context,
           builder: (buildcontext) {
+            final ctrlHome = context.read<HomeController>();
+            ctrlHome.getValidaTurnoServer(context);
             return CupertinoAlertDialog(
               title: const Text("Aviso"),
               content: Text('${data['msg']}'),
@@ -3940,6 +3943,27 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
           });
     }
   }
+  // void _showAlertDialog(dynamic data) {
+  //   if (data['msg'] != '') {
+  //     showDialog(
+  //       context: context,
+  //       builder: (buildcontext) {
+  //         return CupertinoAlertDialog(
+  //           title: const Text("Aviso"),
+  //           content: Text('${data['msg']}'),
+  //           actions: [
+  //             CupertinoDialogAction(
+  //               child: const Text("Aceptar"),
+  //               onPressed: () {
+  //                 Navigator.of(context).pop(); // Cierra el diálogo
+  //               },
+  //             ),
+  //           ],
+  //         );
+  //       },
+  //     );
+  //   }
+  // }
 
 //************************************//
 
