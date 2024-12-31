@@ -799,7 +799,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 2.0.2',
+              'Ver: 2.0.3',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,

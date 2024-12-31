@@ -37,8 +37,8 @@ android {
         targetSdk = 35
         // versionCode = flutter.versionCode
         // versionName = flutter.versionName
-        versionCode = 25
-        versionName = "2.0.2"
+        versionCode = 26
+        versionName = "2.0.3"
         multiDexEnabled true
     }
     signingConfigs {
