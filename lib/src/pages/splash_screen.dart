@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_app_version_checker/flutter_app_version_checker.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:nseguridad/src/controllers/botonTurno_controller.dart';
 import 'package:nseguridad/src/controllers/home_ctrl.dart';
 
 import 'package:nseguridad/src/pages/login.dart';
@@ -47,6 +48,8 @@ class _SplashPageState extends State<SplashPage> {
 
   _chechLogin() async {
     final controllerHome = Provider.of<HomeController>(context, listen: false);
+    final ctrlBoton = Provider.of<BotonTurnoController>(context, listen: false);
+
     //  final notificationProvider = NotificationProvider();
     final Session? session = await Auth.instance.getSession();
     // controllerHome.setSesionUser(session);
@@ -64,23 +67,42 @@ class _SplashPageState extends State<SplashPage> {
         if (isGPSActive == true) {
           await controllerHome.getCurrentPosition();
 
+          // if (controllerHome.getCoords != '') {
+          //   if (session.rol!.contains('GUARDIA') ||
+          //       session.rol!.contains('SUPERVISOR') ||
+          //       session.rol!.contains('ADMINISTRACION')) {
+          //     controllerHome.getValidaTurnoServer(context);
+          //     controllerHome.buscaNotificacionesPush('');
+          //     controllerHome.buscaNotificacionesPush2('');
+          //     // print('EL TURNO SI EXISTE : ${_isTurned}');
+          //     //      controllerHome.setValidaBtnTurno((validaTurno != null) ? true : false);
+
+          //     //   if (controllerHome.getBotonTurno) {
+          //     //     controllerHome.setBotonTurno(true); //P OR DEFAUL ES TRUE
+          //     //   } else {
+          //     //     controllerHome.setBotonTurno(false);
+          //     //   }
+          //   }
           if (controllerHome.getCoords != '') {
-            if (session.rol!.contains('GUARDIA') ||
-                session.rol!.contains('SUPERVISOR') ||
-                session.rol!.contains('ADMINISTRACION')) {
-              controllerHome.getValidaTurnoServer(context);
-              controllerHome.buscaNotificacionesPush('');
-              controllerHome.buscaNotificacionesPush2('');
-              // print('EL TURNO SI EXISTE : ${_isTurned}');
-              //      controllerHome.setValidaBtnTurno((validaTurno != null) ? true : false);
+            if (session.rol!.contains('ADMIN')) {
+              ctrlBoton.setTurnoBTN(true);
+            } else {
+              if (session.rol!.contains('GUARDIA') ||
+                  session.rol!.contains('SUPERVISOR') ||
+                  session.rol!.contains('ADMINISTRACION')) {
+                controllerHome.getValidaTurnoServer(context);
+                controllerHome.buscaNotificacionesPush('');
+                controllerHome.buscaNotificacionesPush2('');
+                // print('EL TURNO SI EXISTE : ${_isTurned}');
+                //      controllerHome.setValidaBtnTurno((validaTurno != null) ? true : false);
 
-              //   if (controllerHome.getBotonTurno) {
-              //     controllerHome.setBotonTurno(true); //P OR DEFAUL ES TRUE
-              //   } else {
-              //     controllerHome.setBotonTurno(false);
-              //   }
+                //   if (controllerHome.getBotonTurno) {
+                //     controllerHome.setBotonTurno(true); //P OR DEFAUL ES TRUE
+                //   } else {
+                //     controllerHome.setBotonTurno(false);
+                //   }
+              }
             }
-
             final String primaryColorStr =
                 session.colorPrimario.toString().substring(1);
             final String secondaryColorStr =
