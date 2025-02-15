@@ -799,7 +799,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
             bottom: 5.0,
             left: 4.0,
             child: Text(
-              'Ver: 2.0.3',
+              'Ver: 2.0.4',
               style: GoogleFonts.roboto(
                 fontSize: size.iScreen(1.7),
                 color: Colors.grey,
@@ -3668,7 +3668,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
                                     ProgressDialog.show(context);
                                     await valueScan.getCurrentPosition();
                                     // await valueScan.validaCodigoQRTurno(context);
-                                    await valueScan.finalizarTurno(context);
+                                    await valueScan.validaFinTurnoQR(context);
                                     ProgressDialog.dissmiss(context);
                                   } else {
                                     if (!mounted) return;

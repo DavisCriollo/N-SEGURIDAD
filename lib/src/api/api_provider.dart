@@ -25,7 +25,6 @@ import 'package:nseguridad/src/utils/dialogs.dart';
 
 import 'package:nseguridad/src/service/notifications_service.dart' as snaks;
 
-
 class ApiProvider {
 //================================= URLS ==============================//
   // final String _dirURL = "https://backsigeop.neitor.com/api";
@@ -34,7 +33,6 @@ class ApiProvider {
   final String _dirURL = "https://backsafe.neitor.com/api";
 //=================================  ==============================//
 
-
   Future<AuthResponse?> login({
     BuildContext? context,
     String? usuario,
@@ -42,16 +40,14 @@ class ApiProvider {
     String? empresa,
   }) async {
     try {
-      final dataResp = await _http.post(
-        
-          Uri.parse('$_dirURL/auth/login'),
+      final dataResp = await _http.post(Uri.parse('$_dirURL/auth/login'),
           body: {"usuario": usuario, "password": password, "empresa": empresa});
       final respo = jsonDecode(dataResp.body);
       print('EL LOGIN  API :${respo}');
-        print('EL code  API :${dataResp.statusCode}');
+      print('EL code  API :${dataResp.statusCode}');
 
       if (dataResp.statusCode == 404 || dataResp.statusCode == 500) {
-       snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
         return null;
       }
       if (dataResp.statusCode == 200) {
@@ -59,7 +55,7 @@ class ApiProvider {
         return responsData;
       }
       if (dataResp.statusCode == 401) {
-          snaks.NotificatiosnService.showSnackBarDanger(
+        snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
         Auth.instance.deleteSesion(context!);
 
@@ -80,24 +76,15 @@ class ApiProvider {
       final dataResp = await _http.post(Uri.parse('$_dirURL/auth/password'),
           body: {"usuario": usuario, "empresa": empresa});
       final respo = jsonDecode(dataResp.body);
-        //  print('-respuesta PASS -> $respo --  ${dataResp.statusCode}');
+      //  print('-respuesta PASS -> $respo --  ${dataResp.statusCode}');
       if (dataResp.statusCode == 404) {
-        final _info={
-          "info":respo['msg'],
-          "code":dataResp.statusCode
-
-        };
+        final _info = {"info": respo['msg'], "code": dataResp.statusCode};
         return _info;
       }
-       
-      if (dataResp.statusCode == 200) {
-        final _info={
-          "info":respo['msg'],
-          "code":dataResp.statusCode
 
-        };
+      if (dataResp.statusCode == 200) {
+        final _info = {"info": respo['msg'], "code": dataResp.statusCode};
         return _info;
-       
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
@@ -155,7 +142,6 @@ class ApiProvider {
     BuildContext? context,
     String? token,
     String? search,
-  
     String? notificacion,
   }) async {
     try {
@@ -203,9 +189,7 @@ class ApiProvider {
       );
       final respo = jsonDecode(dataResp.body);
 
-
-          // print('MULTAS ===> : $respo');
-
+      // print('MULTAS ===> : $respo');
 
       if (dataResp.body.isEmpty) {
         return null;
@@ -239,15 +223,13 @@ class ApiProvider {
       final url =
           Uri.parse('$_dirURL/clientes/filtro/0?search=$search&estado=$estado');
 
-          
-
-          final dataResp = await _http.get(
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
       final respo = jsonDecode(dataResp.body);
 
-    print('RESP : $respo');
+      print('RESP : $respo');
       if (dataResp.statusCode == 200) {
         return respo;
       }
@@ -564,7 +546,7 @@ class ApiProvider {
       }
       if (dataResp.statusCode == 200) {
         // final responseData = AllImplementoPedido.fromJson(dataResp.body);
-         final responseData = jsonDecode(dataResp.body);
+        final responseData = jsonDecode(dataResp.body);
 
         return responseData;
       }
@@ -1136,7 +1118,6 @@ class ApiProvider {
     }
   }
 
-
   //=========================GET ALL ACTIVIDADES =====================================//
   Future getAllActividades({
     BuildContext? context,
@@ -1177,16 +1158,13 @@ class ApiProvider {
   Future getAllActividadesAsignadas({
     BuildContext? context,
     String? search,
-      String? notificacion,
-         String? opcion,
+    String? notificacion,
+    String? opcion,
     String? token,
   }) async {
-    
     try {
-    
-   
-  
-      final url = Uri.parse('$_dirURL/actividades_asignadas/filtro/0?search=$search&notificacion=$notificacion&opcion=$opcion');
+      final url = Uri.parse(
+          '$_dirURL/actividades_asignadas/filtro/0?search=$search&notificacion=$notificacion&opcion=$opcion');
 
       final dataResp = await _http.get(
         url,
@@ -1216,6 +1194,7 @@ class ApiProvider {
       return null;
     }
   }
+
   //=========================GET ALL CLIENTES =====================================//
   Future getAllClientesVarios({
     BuildContext? context,
@@ -1273,9 +1252,6 @@ class ApiProvider {
         "tokennotificacion": tokennotificacion,
       };
 
-
-        
-
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
 
@@ -1292,7 +1268,7 @@ class ApiProvider {
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
 
-          print('Recibe de la api Token FCM ${dataResp.body}');
+        print('Recibe de la api Token FCM ${dataResp.body}');
 
         return responseData;
       }
@@ -1349,8 +1325,7 @@ class ApiProvider {
     String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/notificaciones/listado');
+      final url = Uri.parse('$_dirURL/notificaciones/listado');
 
       final dataResp = await _http.get(
         url,
@@ -1364,7 +1339,6 @@ class ApiProvider {
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
         return responseData;
-        
       }
       if (dataResp.statusCode == 404) {
         return null;
@@ -1385,8 +1359,7 @@ class ApiProvider {
     String? token,
   }) async {
     try {
-      final uri = Uri.parse(
-          '$_dirURL/notificaciones/token/eliminar');
+      final uri = Uri.parse('$_dirURL/notificaciones/token/eliminar');
       final headers = {
         'Content-Type': 'application/json',
         "x-auth-token": "$token"
@@ -1409,7 +1382,7 @@ class ApiProvider {
       }
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
-         print('RESPUESTA  de la api AL ELIMINAR Token FCM ${dataResp.body}');
+        print('RESPUESTA  de la api AL ELIMINAR Token FCM ${dataResp.body}');
         return responseData;
       }
       if (dataResp.statusCode == 401) {
@@ -1417,7 +1390,7 @@ class ApiProvider {
         return null;
       }
     } catch (e) {
-       return null;
+      return null;
     }
   }
 
@@ -1434,30 +1407,27 @@ class ApiProvider {
         headers: {"x-auth-token": '$token'},
       );
 
-            // print('LA DATA DE TURNO core *******> : ${dataResp.body} -*- ${dataResp.statusCode}');
-     if (dataResp.body.isEmpty) {
+      // print('LA DATA DE TURNO core *******> : ${dataResp.body} -*- ${dataResp.statusCode}');
+      if (dataResp.body.isEmpty) {
         return null;
       }
 
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
 
-          // print('LA DATA DE TURNO *******> : ${responseData}');
-        
+        // print('LA DATA DE TURNO *******> : ${responseData}');
 
-       return responseData;
-       
+        return responseData;
       }
       if (dataResp.statusCode == 404) {
-       
         return null;
       }
       if (dataResp.statusCode == 401) {
-         snaks.NotificatiosnService.showSnackBarDanger(
+        snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
-       
+
         // Auth.instance.deleteSesion(context!);
-       return null;
+        return null;
       }
     } catch (e) {
       return null;
@@ -1480,7 +1450,7 @@ class ApiProvider {
         headers: {"x-auth-token": '$token'},
       );
 
-print('verificacion ***** > :${dataResp.body}');
+      print('verificacion ***** > :${dataResp.body}');
       if (dataResp.body.isEmpty) {
         return null;
       }
@@ -1513,25 +1483,23 @@ print('verificacion ***** > :${dataResp.body}');
         url,
         headers: {"x-auth-token": '$token'},
       );
- if (dataRespToken.body.isEmpty) {
+      if (dataRespToken.body.isEmpty) {
         return null;
       }
       if (dataRespToken.statusCode == 200) {
         final responseData = jsonDecode(dataRespToken.body);
-       return responseData;
+        return responseData;
       }
       if (dataRespToken.statusCode == 404) {
         return null;
       }
       if (dataRespToken.statusCode == 401) {
-        
         return null;
       }
     } catch (e) {
       return null;
     }
   }
-
 
   //=========================GET ALL PREGUNTAS =====================================//
   Future getAllPreguntas({
@@ -1541,8 +1509,7 @@ print('verificacion ***** > :${dataResp.body}');
     String? token,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/encuestas_evaluaciones/filtro/0');
+      final url = Uri.parse('$_dirURL/encuestas_evaluaciones/filtro/0');
 
       final dataResp = await _http.get(
         url,
@@ -1553,7 +1520,7 @@ print('verificacion ***** > :${dataResp.body}');
         return null;
       }
       if (dataResp.statusCode == 200) {
-  final responseData = jsonDecode(dataResp.body);
+        final responseData = jsonDecode(dataResp.body);
         return responseData;
       }
       if (dataResp.statusCode == 404) {
@@ -1561,7 +1528,7 @@ print('verificacion ***** > :${dataResp.body}');
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-      return null;
+        return null;
       }
     } catch (e) {
       return null;
@@ -1575,8 +1542,7 @@ print('verificacion ***** > :${dataResp.body}');
     String? token,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/encuestas_evaluaciones/$search');
+      final url = Uri.parse('$_dirURL/encuestas_evaluaciones/$search');
 
       final dataResp = await _http.get(
         url,
@@ -1587,7 +1553,7 @@ print('verificacion ***** > :${dataResp.body}');
         return null;
       }
       if (dataResp.statusCode == 200) {
- final responseData = jsonDecode(dataResp.body);
+        final responseData = jsonDecode(dataResp.body);
         return responseData;
       }
       if (dataResp.statusCode == 404) {
@@ -1595,7 +1561,7 @@ print('verificacion ***** > :${dataResp.body}');
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-       
+
         return null;
       }
     } catch (e) {
@@ -1605,7 +1571,6 @@ print('verificacion ***** > :${dataResp.body}');
 
   //========================= GUARDA ENCUESTA-ECALUACION GUARDIA =====================================//
   Future saveEvaluacion({
-   
     EvaluacionesController? controller,
     dynamic data,
     List<TextEditingController>? controllersText,
@@ -1613,10 +1578,8 @@ print('verificacion ***** > :${dataResp.body}');
   }) async {
     try {
       var _dio = Dio();
-      final dataResp = await _dio.put(
-          '$_dirURL/encuestas_evaluaciones/0',
-          data: data,
-          options: Options(headers: {'x-auth-token': '$token'}));
+      final dataResp = await _dio.put('$_dirURL/encuestas_evaluaciones/0',
+          data: data, options: Options(headers: {'x-auth-token': '$token'}));
 
       if (dataResp.data.isEmpty) {
         return null;
@@ -1658,7 +1621,7 @@ print('verificacion ***** > :${dataResp.body}');
         return null;
       }
       if (dataResp.statusCode == 200) {
- final responseData = jsonDecode(dataResp.body);
+        final responseData = jsonDecode(dataResp.body);
         return responseData;
       }
       if (dataResp.statusCode == 404) {
@@ -1666,7 +1629,7 @@ print('verificacion ***** > :${dataResp.body}');
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-       return null;
+        return null;
       }
     } catch (e) {
       return null;
@@ -1693,7 +1656,7 @@ print('verificacion ***** > :${dataResp.body}');
         return null;
       }
       if (dataResp.statusCode == 200) {
- final responseData = jsonDecode(dataResp.body);
+        final responseData = jsonDecode(dataResp.body);
         return responseData;
       }
       if (dataResp.statusCode == 404) {
@@ -1701,7 +1664,7 @@ print('verificacion ***** > :${dataResp.body}');
       }
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
-       return null;
+        return null;
       }
     } catch (e) {
       return null;
@@ -1718,7 +1681,6 @@ print('verificacion ***** > :${dataResp.body}');
   }) async {
     try {
       final url = Uri.parse(
-
           '$_dirURL/mejoracontinua/filtro/0?tipo=$tipo&search=$search&notificacion=$notificacion');
 
       final dataResp = await _http.get(
@@ -1751,28 +1713,19 @@ print('verificacion ***** > :${dataResp.body}');
   Future getGuardiasReemplazoAusencias({
     BuildContext? context,
     List<String>? listaIds,
-   
     String? token,
   }) async {
+    String _listaTurnos = '';
 
-
-String  _listaTurnos='';
-  
-_listaTurnos =listaIds!
-      .map((val) => val.trim())
-      .join(',');
-  // print(result);
-  // _listaTurnos=result;
-
+    _listaTurnos = listaIds!.map((val) => val.trim()).join(',');
+    // print(result);
+    // _listaTurnos=result;
 
 // print('LOS IDS:${_listaTurnos}');
 
-
-
-
     try {
-      final url = Uri.parse( '$_dirURL/turnoextra/byid?lista=$_listaTurnos');
-          // '$_dirURL/turnoextra/byid?lista=$_listaTurnos');
+      final url = Uri.parse('$_dirURL/turnoextra/byid?lista=$_listaTurnos');
+      // '$_dirURL/turnoextra/byid?lista=$_listaTurnos');
 
       final dataResp = await _http.get(
         url,
@@ -1809,11 +1762,11 @@ _listaTurnos =listaIds!
 //     try {
 //       // print(infoInventarioInterno);
 //       final dataResp = await _http.post(
-        
+
 //           Uri.parse('$_dirURL/procesando_actividades/'),
 //           body: {
 //                   "act_asigId": infoInventarioInterno['act_asigId'], //id registro
-//   "titulo": infoInventarioInterno['titulo'], 
+//   "titulo": infoInventarioInterno['titulo'],
 //   "qr": "", // vacio
 //   "fotos": [], //no obligatorio (3max)
 //   "videos": [], // no obligatorio (1max)
@@ -1838,9 +1791,9 @@ _listaTurnos =listaIds!
 //     }
 //   }
 
- Future guardaInventarioInterno({
+  Future guardaInventarioInterno({
     BuildContext? context,
-   dynamic infoInventarioInterno,
+    dynamic infoInventarioInterno,
     String? token,
   }) async {
     try {
@@ -1850,15 +1803,16 @@ _listaTurnos =listaIds!
         "x-auth-token": "$token"
       };
       Map<String, dynamic> body = {
-                  "act_asigId": infoInventarioInterno['act_asigId'], //id registro
-  "titulo": infoInventarioInterno['titulo'], 
-  "qr": "", // vacio
-  "fotos": [], //no obligatorio (3max)
-  "videos": [], // no obligatorio (1max)
-  "vestimentas": infoInventarioInterno['vestimentas'],
-  "armas":infoInventarioInterno['armas'], //formar de acuerdo al listado del endpoint (si existe true caso contrario false)
-  "municiones": infoInventarioInterno['municiones'],
-            };
+        "act_asigId": infoInventarioInterno['act_asigId'], //id registro
+        "titulo": infoInventarioInterno['titulo'],
+        "qr": "", // vacio
+        "fotos": [], //no obligatorio (3max)
+        "videos": [], // no obligatorio (1max)
+        "vestimentas": infoInventarioInterno['vestimentas'],
+        "armas": infoInventarioInterno[
+            'armas'], //formar de acuerdo al listado del endpoint (si existe true caso contrario false)
+        "municiones": infoInventarioInterno['municiones'],
+      };
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
 
@@ -1885,8 +1839,7 @@ _listaTurnos =listaIds!
     } catch (e) {
       return null;
     }
-
-}
+  }
 //  Future guardaActividadDeRonda({
 //     BuildContext? context,
 //    dynamic infoInventarioInterno,
@@ -1908,8 +1861,8 @@ _listaTurnos =listaIds!
 //         'Content-Type': 'application/json',
 //         "x-auth-token": "$token"
 //       };
-//       Map<String, dynamic> body = 
-      
+//       Map<String, dynamic> body =
+
 //       {
 //     "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
 //   "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
@@ -1953,12 +1906,12 @@ _listaTurnos =listaIds!
 
 // }
 
-// Future guardaActividadDeRonda(  
+// Future guardaActividadDeRonda(
 //  { BuildContext? context,
 //    dynamic infoInventarioInterno,
 //     String? token,}
 // ) async {
-   
+
 //   Map<String, String> headers = {
 //    'Content-Type': 'application/json',
 //         "x-auth-token": "$token"
@@ -1971,7 +1924,7 @@ _listaTurnos =listaIds!
 //   "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
 //   "videos": infoInventarioInterno['videos'],// no obligatorio pero (1max)
 //   "coordenasGps": infoInventarioInterno['coordenasGps']
-  
+
 //   };
 
 //   try {
@@ -1994,48 +1947,45 @@ _listaTurnos =listaIds!
 //   }
 // }
 
-
-
-Future guardaActividadDeRonda(
-
-{
+  Future guardaActividadDeRonda({
     BuildContext? context,
-   dynamic infoInventarioInterno,
+    dynamic infoInventarioInterno,
     String? token,
-  }
+  }) async {
+    String url =
+        '$_dirURL/procesando_actividades/'; // Reemplaza con tu URL de destino
 
-
-) async {
-
-  String url = '$_dirURL/procesando_actividades/';  // Reemplaza con tu URL de destino
-
-  // Dio dio = Dio();
+    // Dio dio = Dio();
 // Map<String, dynamic> data = {
-  //   "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
-  // "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
-  // "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
-  // "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
-  // "videos": infoInventarioInterno['videos'],
-  // "coordenasGps": _coordenadas
-  // //infoInventarioInterno['coordenasGps']
-  //     };
-  Map<String, dynamic> data ={};
+    //   "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
+    // "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
+    // "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
+    // "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
+    // "videos": infoInventarioInterno['videos'],
+    // "coordenasGps": _coordenadas
+    // //infoInventarioInterno['coordenasGps']
+    //     };
+    Map<String, dynamic> data = {};
 // if (infoInventarioInterno['lugar']=="RONDAS"){
-  final _coordenadas=
-{"longitud": infoInventarioInterno['coordenasGps']['longitud'], "latitud": infoInventarioInterno['coordenasGps']['latitud']};
+    final _coordenadas = {
+      "longitud": infoInventarioInterno['coordenasGps']['longitud'],
+      "latitud": infoInventarioInterno['coordenasGps']['latitud']
+    };
 
-  
-data = {
-    "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
-  "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
-  "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
-  "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
-  "videos": infoInventarioInterno['videos'],
-   "coordenasGps":
-   {"longitud": infoInventarioInterno['coordenasGps']['longitud'], "latitud": infoInventarioInterno['coordenasGps']['latitud']} ,
-    "id": infoInventarioInterno['id'],
-
-      };
+    data = {
+      "act_asigId":
+          infoInventarioInterno['act_asigId'], //id registro // id registro
+      "titulo": infoInventarioInterno[
+          'titulo'], // input texto obligatorio (validar enter y comillas "")
+      "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
+      "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
+      "videos": infoInventarioInterno['videos'],
+      "coordenasGps": {
+        "longitud": infoInventarioInterno['coordenasGps']['longitud'],
+        "latitud": infoInventarioInterno['coordenasGps']['latitud']
+      },
+      "id": infoInventarioInterno['id'],
+    };
 // }
 // else if (infoInventarioInterno['lugar']=="INVENTARIO EXTERNO") {
 //  data = {
@@ -2046,41 +1996,35 @@ data = {
 //   "videos": infoInventarioInterno['videos'],
 //   };
 
-  try {
-    // final response = await dio.post(
-    //   url,
-    //   data: data,
-    //    options: Options(headers: {
-    //      'Content-Type': 'application/json',
-    //     'x-auth-token': '$token'
-    //     }));
+    try {
+      // final response = await dio.post(
+      //   url,
+      //   data: data,
+      //    options: Options(headers: {
+      //      'Content-Type': 'application/json',
+      //     'x-auth-token': '$token'
+      //     }));
 
-  final Map<String, String> cabeceras = {
-    'Content-Type': 'application/json',
-    'x-auth-token': '$token',
-  };
+      final Map<String, String> cabeceras = {
+        'Content-Type': 'application/json',
+        'x-auth-token': '$token',
+      };
 
- 
-          // print('LA DATA DE RONDAS *******> : ${data}');
+      // print('LA DATA DE RONDAS *******> : ${data}');
 
-  final response = await _http.post(
-    Uri.parse(url),
-    headers: cabeceras,
-    body: json.encode(data), // Asegúrate de importar 'dart:convert'
-  );
+      final response = await _http.post(
+        Uri.parse(url),
+        headers: cabeceras,
+        body: json.encode(data), // Asegúrate de importar 'dart:convert'
+      );
 
+      // print('Respuesta  ${response.statusCode}');
 
+      // print('la Respuesta de laa api : ${response.body}');
 
-
-
-  // print('Respuesta  ${response.statusCode}');
-
-  // print('la Respuesta de laa api : ${response.body}');
-
-
-     if (response.statusCode == 404|| response.statusCode == 500) {
-String errorMsg = json.decode(response.body)['msg'];
-snaks.NotificatiosnService.showSnackBarDanger(errorMsg);
+      if (response.statusCode == 404 || response.statusCode == 500) {
+        String errorMsg = json.decode(response.body)['msg'];
+        snaks.NotificatiosnService.showSnackBarDanger(errorMsg);
 
         return response;
       }
@@ -2090,65 +2034,58 @@ snaks.NotificatiosnService.showSnackBarDanger(errorMsg);
 //         return response.body;
 //       }
       if (response.statusCode == 200) {
-           print('Respuesta DE LA RONDA OK *****> : ${response.body}');
-           
-           
+        print('Respuesta DE LA RONDA OK *****> : ${response.body}');
+
         return response;
       }
       if (response.statusCode == 401) {
-          //  print('Respuesta 200: ${response.body}');
-          snaks.NotificatiosnService.showSnackBarDanger('inicie seerion nuevamente');
+        //  print('Respuesta 200: ${response.body}');
+        snaks.NotificatiosnService.showSnackBarDanger(
+            'inicie seerion nuevamente');
         Auth.instance.deleteSesion(context!);
 
-
         return null;
-      } 
-    else {
-      // Error en la petición, maneja el caso según tus necesidades
-      // print('Error: ${response.statusCode}');
+      } else {
+        // Error en la petición, maneja el caso según tus necesidades
+        // print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Error al realizar la petición, maneja el caso según tus necesidades
+      print('Error: $e');
+      snaks.NotificatiosnService.showSnackBarDanger("$e");
     }
-  } catch (e) {
-    // Error al realizar la petición, maneja el caso según tus necesidades
-    print('Error: $e');
-       snaks.NotificatiosnService.showSnackBarDanger("$e");
   }
-}
 
-Future guardaActividadDeInventario(
-
-{
+  Future guardaActividadDeInventario({
     BuildContext? context,
-   dynamic infoInventarioInterno,
+    dynamic infoInventarioInterno,
     String? token,
-  }
+  }) async {
+    String url =
+        '$_dirURL/procesando_actividades/'; // Reemplaza con tu URL de destino
 
-
-) async {
-
-  String url = '$_dirURL/procesando_actividades/';  // Reemplaza con tu URL de destino
-
-  Dio dio = Dio();
+    Dio dio = Dio();
 // Map<String, dynamic> data = {
-  //   "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
-  // "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
-  // "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
-  // "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
-  // "videos": infoInventarioInterno['videos'],
-  // "coordenasGps": _coordenadas
-  // //infoInventarioInterno['coordenasGps']
-  //     };
-  Map<String, dynamic> data ={};
+    //   "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
+    // "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
+    // "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
+    // "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
+    // "videos": infoInventarioInterno['videos'],
+    // "coordenasGps": _coordenadas
+    // //infoInventarioInterno['coordenasGps']
+    //     };
+    Map<String, dynamic> data = {};
 
-data = {
-    "act_asigId": infoInventarioInterno['act_asigId'], //id registro // id registro
-  "titulo": infoInventarioInterno['titulo'], // input texto obligatorio (validar enter y comillas "")
-  "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
-  "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
-  "videos": infoInventarioInterno['videos'],
-   "id": infoInventarioInterno['id'],
- 
-
-      };
+    data = {
+      "act_asigId":
+          infoInventarioInterno['act_asigId'], //id registro // id registro
+      "titulo": infoInventarioInterno[
+          'titulo'], // input texto obligatorio (validar enter y comillas "")
+      "qr": infoInventarioInterno['qr'], // escanear el qr (obligatorio)
+      "fotos": infoInventarioInterno['fotos'], // no obligatorio pero (1max)
+      "videos": infoInventarioInterno['videos'],
+      "id": infoInventarioInterno['id'],
+    };
 // }
 // else if (infoInventarioInterno['lugar']=="INVENTARIO EXTERNO") {
 //  data = {
@@ -2159,45 +2096,41 @@ data = {
 //   "videos": infoInventarioInterno['videos'],
 //   };
 
-
-  try {
-    final response = await dio.post(
-      url,
-      data: data,
-       options: Options(headers: {
-         'Content-Type': 'application/json',
-        'x-auth-token': '$token'
-        }));
-  // print('la Respuesta de laa api : ${response.data}');
-     if (response.statusCode == 404) {
-          // print('Respuesta: ${response.data}');
+    try {
+      final response = await dio.post(url,
+          data: data,
+          options: Options(headers: {
+            'Content-Type': 'application/json',
+            'x-auth-token': '$token'
+          }));
+      // print('la Respuesta de laa api : ${response.data}');
+      if (response.statusCode == 404) {
+        // print('Respuesta: ${response.data}');
         return null;
       }
       if (response.statusCode == 500) {
-          // print('Respuesta: ${response.data}');
+        // print('Respuesta: ${response.data}');
         return response.data;
       }
       if (response.statusCode == 200) {
-          // print('Respuesta: ${response.data}');
+        // print('Respuesta: ${response.data}');
         return response.data;
       }
       if (response.statusCode == 401) {
-          //  print('Respuesta: ${response.data}');
+        //  print('Respuesta: ${response.data}');
         Auth.instance.deleteSesion(context!);
 
         return null;
-      } 
-    else {
-      // Error en la petición, maneja el caso según tus necesidades
-      // print('Error: ${response.statusCode}');
+      } else {
+        // Error en la petición, maneja el caso según tus necesidades
+        // print('Error: ${response.statusCode}');
+      }
+    } catch (e) {
+      // Error al realizar la petición, maneja el caso según tus necesidades
+      print('Error: $e');
     }
-  } catch (e) {
-    // Error al realizar la petición, maneja el caso según tus necesidades
-    print('Error: $e');
   }
-}
 // }
-
 
 //=====================================================//
 // Future  obtenerHoraDesdeInternet() async {
@@ -2212,29 +2145,13 @@ data = {
 //      if (response.statusCode == 404 ||response.statusCode == 401 ||response.statusCode == 500) {
 //           // print('Respuesta: ${response.data}');
 //         return null;
-      
-       
-
-
-
-
-
-
-
-
 
 //   } else {
 //     throw Exception('Error al obtener la hora desde Internet');
 //   }
 // }
 
-
-
-
-
 //=====================================================//
-
-
 
   //=========================GET ALL bitacotas CLIENTES =====================================//
   Future getAllBitacoras({
@@ -2243,29 +2160,23 @@ data = {
     String? search,
     String? tipo,
     String? idTurno,
-      
     String? notificacion,
   }) async {
-
-String _path='';
-if(tipo=='CLIENTE'||tipo=='RESIDENTE'){
-_path='$_dirURL/bitacora/cliente_residente';
-
-
-}else{
-
-_path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&regId=$idTurno';
-
-
-}
+    String _path = '';
+    if (tipo == 'CLIENTE' || tipo == 'RESIDENTE') {
+      _path = '$_dirURL/bitacora/cliente_residente';
+    } else {
+      _path =
+          '$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&regId=$idTurno';
+    }
 
     try {
       final url = Uri.parse(
           // '$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&regId=$idTurno');
           // '$_dirURL/bitacora/filtro/0?search&regId=1073');
-        // '$_dirURL/bitacora/cliente_residente');
-        //  '$_dirURL/$_path!');
-         _path);
+          // '$_dirURL/bitacora/cliente_residente');
+          //  '$_dirURL/$_path!');
+          _path);
 
       final dataResp = await _http.get(
         url,
@@ -2273,7 +2184,6 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       );
 
 // print(' LA RESPUESTA DEL GET; ${dataResp.body}');
-
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
@@ -2293,7 +2203,6 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     }
   }
 
-
   //=========================GET ALL CLIENTE MULTAS GUALDIAS =====================================//
 
   Future getAllPersonasBitacora({
@@ -2308,7 +2217,8 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     try {
       final url =
           // Uri.parse('$_dirURL/clientes/filtro/0?search=$search&estado=$estado');
-          Uri.parse('$_dirURL/residentes/filtro/0?search=$search&regId=$regId&cliId=$cliId&cliUbicacion=$cliUbicacion&cliPuesto=$cliPuesto');
+          Uri.parse(
+              '$_dirURL/residentes/filtro/0?search=$search&regId=$regId&cliId=$cliId&cliUbicacion=$cliUbicacion&cliPuesto=$cliPuesto');
 
       final dataResp = await _http.get(
         url,
@@ -2316,8 +2226,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       );
       final respo = jsonDecode(dataResp.body);
 
-        // print('Respuesta: ${respo.runtimeType}');
-
+      // print('Respuesta: ${respo.runtimeType}');
 
       if (dataResp.statusCode == 200) {
         return respo;
@@ -2334,7 +2243,6 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       return null;
     }
   }
-
 
   //=========================GET ALL RESIDENTES =====================================//
   Future getAllResidentes({
@@ -2354,7 +2262,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
         headers: {"x-auth-token": '$token'},
       );
       final respo = jsonDecode(dataResp.body);
-       print('la data de residentes ********************* :${respo.body} ');
+      print('la data de residentes ********************* :${respo.body} ');
       if (dataResp.statusCode == 200) {
         return respo;
       }
@@ -2388,22 +2296,16 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
           // '$_dirURL/residentes/byCliId/0?&search=$search&notificacion=$notificacion&cliId=$idCli');
           // '$_dirURL/residentes/filtro/0?search=$search&regId=$regId&cliId=$cliId&cliUbicacion=$cliUbicacion&cliPuesto=$cliPuesto');
           '$_dirURL/residentes/listarDelTurnoIniciado/0?regId=$regId');
-          
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-        print('la data de residentes--------------------> :${dataResp.body} ');
+      print('la data de residentes--------------------> :${dataResp.body} ');
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
-        
-        
         // print('la data de residentessss :${respo} ');
         return respo;
-
-
-
       }
 
       if (dataResp.statusCode == 404) {
@@ -2424,7 +2326,6 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     BuildContext? context,
     String? token,
     String? idCli,
-   
   }) async {
     try {
       final url = Uri.parse(
@@ -2438,7 +2339,6 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       );
 
 // print('EL RESPONSE : ${dataResp.body}');
-
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
@@ -2478,12 +2378,11 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
         print('LA DATA DE BITACORA --------- > $respo');
-        if (respo=={}) {
-           return null;
+        if (respo == {}) {
+          return null;
         } else {
- return respo;
+          return respo;
         }
-       
       }
 
       if (dataResp.statusCode == 404) {
@@ -2506,7 +2405,6 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     String? estado,
     String? token,
   }) async {
-
     try {
       final url =
           Uri.parse('$_dirURL/personas/filtro/0?search=$search&estado=$estado');
@@ -2541,13 +2439,10 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
   Future getAllBodegas({
     BuildContext? context,
     String? search,
-
     String? token,
   }) async {
-
     try {
-      final url =
-          Uri.parse('$_dirURL/bodegas/filtro/0?search=$search');
+      final url = Uri.parse('$_dirURL/bodegas/filtro/0?search=$search');
 
       final dataResp = await _http.get(
         url,
@@ -2574,19 +2469,18 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       return null;
     }
   }
+
   //=========================GET ALL INVENTARIO=====================================//
   Future getAllInventario({
     BuildContext? context,
     String? search,
     String? bodega,
     String? tipo,
-
     String? token,
   }) async {
-
     try {
-      final url =
-          Uri.parse('$_dirURL/inventario/filtroserie/0?tipo=$tipo&bodega=$bodega&nombre=$search');
+      final url = Uri.parse(
+          '$_dirURL/inventario/filtroserie/0?tipo=$tipo&bodega=$bodega&nombre=$search');
 
       final dataResp = await _http.get(
         url,
@@ -2613,19 +2507,18 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       return null;
     }
   }
+
   //=========================GET ALL INVENTARIO MUNISIONES=====================================//
   Future getAllInventarioMunisiones({
     BuildContext? context,
     String? search,
     String? bodega,
     String? tipo,
-
     String? token,
   }) async {
-
     try {
-      final url =
-          Uri.parse('$_dirURL/inventario/filtroanidado/0?tipo=$tipo&bodega=$bodega&nombre=$search');
+      final url = Uri.parse(
+          '$_dirURL/inventario/filtroanidado/0?tipo=$tipo&bodega=$bodega&nombre=$search');
 
       final dataResp = await _http.get(
         url,
@@ -2652,6 +2545,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       return null;
     }
   }
+
   //=========================GET ALL GUARDIAS =====================================//
   Future getAllGuardiasDeCliente({
     BuildContext? context,
@@ -2659,10 +2553,9 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     String? documento,
     String? token,
   }) async {
-
     try {
-      final url =
-          Uri.parse('$_dirURL/personas/listado/0?docnumero=$documento&search=$search');
+      final url = Uri.parse(
+          '$_dirURL/personas/listado/0?docnumero=$documento&search=$search');
 
       final dataResp = await _http.get(
         url,
@@ -2690,7 +2583,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     }
   }
 
- //=========================GET ALL CLIENTE MULTAS GUALDIAS =====================================//
+  //=========================GET ALL CLIENTE MULTAS GUALDIAS =====================================//
 
   Future getAllFaltasInjustificadas({
     BuildContext? context,
@@ -2698,10 +2591,10 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     String? tipo,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/nominanovedades/byFaltasInjustificadas?tipo=$tipo');
-        
-          final dataResp = await _http.get(
+      final url = Uri.parse(
+          '$_dirURL/nominanovedades/byFaltasInjustificadas?tipo=$tipo');
+
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
@@ -2723,7 +2616,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     }
   }
 
- //=========================GET ALL MULTAS=====================================//
+  //=========================GET ALL MULTAS=====================================//
   Future getIdTurnoMultas({
     BuildContext? context,
     String? idTurno,
@@ -2733,7 +2626,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       final url = Uri.parse(
 
           // '$_dirURL/nominanovedades/getMultaById?lista=$idTurno');
-             '$_dirURL/turnoextra/byid?lista=$idTurno');
+          '$_dirURL/turnoextra/byid?lista=$idTurno');
 
       final dataResp = await _http.get(
         url,
@@ -2741,7 +2634,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       );
       final respo = jsonDecode(dataResp.body);
 
-  //  print('Respuesta: ${respo}');
+      //  print('Respuesta: ${respo}');
 
       if (dataResp.body.isEmpty) {
         return null;
@@ -2762,7 +2655,8 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       return null;
     }
   }
- //=========================GET PERSONA POR ID=====================================//
+
+  //=========================GET PERSONA POR ID=====================================//
   Future getIdPersona({
     BuildContext? context,
     String? idTurno,
@@ -2780,7 +2674,7 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       );
       final respo = jsonDecode(dataResp.body);
 
-  //  print('Respuesta: ${respo}');
+      //  print('Respuesta: ${respo}');
 
       if (dataResp.body.isEmpty) {
         return null;
@@ -2802,29 +2696,20 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
     }
   }
 
-
-
-
- //=========================GET ALL ROLES =====================================//
+  //=========================GET ALL ROLES =====================================//
   Future getAllRolesPago({
     BuildContext? context,
-      String? token,
+    String? token,
   }) async {
-    
     try {
-    
-   
-  
       final url = Uri.parse('$_dirURL/rolpagos/byUser');
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-        
 
 // print('ROLES : ${dataResp.body}');
-
 
       if (dataResp.body.isEmpty) {
         return null;
@@ -2836,41 +2721,35 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       if (dataResp.statusCode == 404) {
         return null;
       }
-     
+
       if (dataResp.statusCode == 401) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
 
         return null;
-
       }
     } catch (e) {
       return null;
     }
   }
 
- //=========================GET ALL GESTIODOCUMENTAL =====================================//
+  //=========================GET ALL GESTIODOCUMENTAL =====================================//
   Future getAllGestionDocumental({
     BuildContext? context,
     String? search,
     String? estado,
-      String? token,
+    String? token,
   }) async {
-    
     try {
-    
-   
-  
-      final url = Uri.parse('$_dirURL/acta_entrega_recepcion/byUser?search=$search&estado=$estado');
+      final url = Uri.parse(
+          '$_dirURL/acta_entrega_recepcion/byUser?search=$search&estado=$estado');
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-        
 
 // print('ROLES : ${dataResp.body}');
-
 
       if (dataResp.body.isEmpty) {
         return null;
@@ -2882,114 +2761,99 @@ _path='$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&reg
       if (dataResp.statusCode == 404) {
         return null;
       }
-     
+
       if (dataResp.statusCode == 401) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
 
         return null;
-
       }
     } catch (e) {
       return null;
     }
   }
 
- //=========================ENVIA LOS URLTEMPORALES =====================================//
+  //=========================ENVIA LOS URLTEMPORALES =====================================//
 
-Future saveUrlAlServidor({ BuildContext? context,File? urlFile, String? token}) async {
-  try {
-     var request = _http.MultipartRequest(
-        'POST', Uri.parse('https://backsafe.neitor.com/api/multimedias'));
+  Future saveUrlAlServidor(
+      {BuildContext? context, File? urlFile, String? token}) async {
+    try {
+      var request = _http.MultipartRequest(
+          'POST', Uri.parse('https://backsafe.neitor.com/api/multimedias'));
 
-    //for token
-    request.headers.addAll({"x-auth-token": '$token'});
+      //for token
+      request.headers.addAll({"x-auth-token": '$token'});
 
-    request.files
-        .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
+      request.files
+          .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
 
-    //for completeing the request
-    var response = await request.send();
+      //for completeing the request
+      var response = await request.send();
 
-    //for getting and decoding the response into json format
-    var responsed = await _http.Response.fromStream(response);
-    // final responseData = json.decode(responsed.body);
+      //for getting and decoding the response into json format
+      var responsed = await _http.Response.fromStream(response);
+      // final responseData = json.decode(responsed.body);
 // print('LISTA SERVER: ${responsed.body}');
       if (responsed.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "No se puede agregar Contenido");
 
         return null;
-      
       }
       if (responsed.statusCode == 200) {
-      final responseFoto = FotoUrl.fromJson(responsed.body);
-      // print('LISTA foto: ${responseFoto.urls[0].url}');
-     return  responseFoto.urls[0].url;
+        final responseFoto = FotoUrl.fromJson(responsed.body);
+        // print('LISTA foto: ${responseFoto.urls[0].url}');
+        return responseFoto.urls[0].url;
       }
       if (responsed.statusCode == 401) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
 
         return null;
-
       }
-
-
-
-  } catch (e) {
- return null;
+    } catch (e) {
+      return null;
+    }
   }
+  //=========================ELIMINA FOTO DEL SERVIDOS=====================================//
 
-   
-
-}
- //=========================ELIMINA FOTO DEL SERVIDOS=====================================//
-
-  Future deleteUrlDelServidor({List<Map<String, String>>? datos, String? token}) async {
+  Future deleteUrlDelServidor(
+      {List<Map<String, String>>? datos, String? token}) async {
     try {
-
-var request = _http.MultipartRequest('POST', Uri.parse('$_dirURL/multimedias'));
- request.headers.addAll({
-        'Content-Type': 'multipart/form-data',
-        "x-auth-token": '$token'
-      });
+      var request =
+          _http.MultipartRequest('POST', Uri.parse('$_dirURL/multimedias'));
+      request.headers.addAll(
+          {'Content-Type': 'multipart/form-data', "x-auth-token": '$token'});
 
 // Convierte el array de objetos a una cadena JSON
-String arrayDeObjetosJson = jsonEncode(datos);
+      String arrayDeObjetosJson = jsonEncode(datos);
 
 // Añade el array de objetos al request
-request.fields['eliminar'] = arrayDeObjetosJson;
+      request.fields['eliminar'] = arrayDeObjetosJson;
 
-var response = await request.send();
+      var response = await request.send();
       // print('=== 200 ===> ${response.reasonPhrase}');
- if (response.statusCode == 200) {
-      // print('=== 200 ===> ${response.reasonPhrase}');
-      return true;
-    }  
-    if (response.statusCode == 404) {
+      if (response.statusCode == 200) {
+        // print('=== 200 ===> ${response.reasonPhrase}');
+        return true;
+      }
+      if (response.statusCode == 404) {
         // snaks.NotificatiosnService.showSnackBarDanger(
         //     "=== 404 ===>  No se puede agregar foto");
         return false;
-       }
+      }
       if (response.statusCode == 401) {
         // snaks.NotificatiosnService.showSnackBarDanger(
         //     "=== 401 ===>  Debe inciar sesión nuevamente");
 
         return false;
-
       }
-
     } catch (err) {
-
       return false;
     }
   }
 
-
-
 //************************************************** NUEVOS ******************************************************/
-
 
   //=========================GET ALL AUSENCIAS DE LOS  GUARDIAS =====================================//
   Future getAllNuevosPermisos({
@@ -3028,18 +2892,14 @@ var response = await request.send();
     }
   }
 
-
-
   //=========================GET ALL HORAS =====================================//
   Future getAllPersonasNuevo({
     BuildContext? context,
     String? search,
-
     String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/personas/filtro/0?search=$search');
+      final url = Uri.parse('$_dirURL/personas/filtro/0?search=$search');
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
@@ -3066,12 +2926,10 @@ var response = await request.send();
     }
   }
 
-
   //=========================GET ALL HORAS =====================================//
   Future getAllHorario({
     BuildContext? context,
     int? id,
-
     String? token,
   }) async {
     try {
@@ -3105,20 +2963,18 @@ var response = await request.send();
 
   //=========================GET ALL HORAS =====================================//
   Future getAllDiasHabiles({
-
     BuildContext? context,
     List? idFechas,
     String? token,
   }) async {
     try {
-      final uri = Uri.parse('$_dirURL/horarios_jornada_laboral/dias-habiles-permiso');
+      final uri =
+          Uri.parse('$_dirURL/horarios_jornada_laboral/dias-habiles-permiso');
       final headers = {
         'Content-Type': 'application/json',
         "x-auth-token": "$token"
       };
-      Map<String, dynamic> body = {
-        "dias": idFechas
-      };
+      Map<String, dynamic> body = {"dias": idFechas};
       String jsonBody = json.encode(body);
       final encoding = Encoding.getByName('utf-8');
 
@@ -3128,19 +2984,19 @@ var response = await request.send();
         body: jsonBody,
         encoding: encoding,
       );
-       print('la informacion dias habiles API: ${dataResp.body}');
+      print('la informacion dias habiles API: ${dataResp.body}');
       if (dataResp.statusCode == 404) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
-       Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
+        Dialogs.alert(context!,
+            title: 'Atención', description: '${message['msg']}');
         return dataResp;
-    
       }
       if (dataResp.statusCode == 500) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
-         Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
-       
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
+        Dialogs.alert(context!,
+            title: 'Atención', description: '${message['msg']}');
+
         return dataResp;
-    
       }
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
@@ -3156,14 +3012,10 @@ var response = await request.send();
     }
   }
 
-
-
-
   //=========================GET ALL HORAS =====================================//
   Future getAllTurnosDiasLibres({
-
     BuildContext? context,
-    Map<String,dynamic>? data,
+    Map<String, dynamic>? data,
     String? token,
   }) async {
     try {
@@ -3182,15 +3034,17 @@ var response = await request.send();
         body: jsonBody,
         encoding: encoding,
       );
-          // print('la informacion dias LIBRES API: ${dataResp.body}');
+      // print('la informacion dias LIBRES API: ${dataResp.body}');
       //  print('la ataResp.statusCode API: ${dataResp.statusCode}');
-      if (dataResp.statusCode == 404||dataResp.statusCode == 200||dataResp.statusCode == 500 ||dataResp.statusCode == 403) {
-      //    Map<String, dynamic> message = jsonDecode(dataResp.body);
-      //  Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
+      if (dataResp.statusCode == 404 ||
+          dataResp.statusCode == 200 ||
+          dataResp.statusCode == 500 ||
+          dataResp.statusCode == 403) {
+        //    Map<String, dynamic> message = jsonDecode(dataResp.body);
+        //  Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
         return dataResp;
-    
       }
-      
+
       if (dataResp.statusCode == 401) {
         Auth.instance.deleteSesion(context!);
 
@@ -3200,32 +3054,24 @@ var response = await request.send();
       return null;
     }
   }
+
 //=========================GET ALL SUGERENCIAS=====================================//
   Future getGuardiasReemplazoPermiso({
     BuildContext? context,
     List<String>? listaIds,
-   
     String? token,
   }) async {
+    String _listaTurnos = '';
 
-
-String  _listaTurnos='';
-  
-_listaTurnos =listaIds!
-      .map((val) => val.trim())
-      .join(',');
-  // print(result);
-  // _listaTurnos=result;
-
+    _listaTurnos = listaIds!.map((val) => val.trim()).join(',');
+    // print(result);
+    // _listaTurnos=result;
 
 // print('LOS IDS:${_listaTurnos}');
 
-
-
-
     try {
-      final url = Uri.parse( '$_dirURL/turnos_extras/byIds/$_listaTurnos');
-          // '$_dirURL/turnoextra/byid?lista=$_listaTurnos');
+      final url = Uri.parse('$_dirURL/turnos_extras/byIds/$_listaTurnos');
+      // '$_dirURL/turnoextra/byid?lista=$_listaTurnos');
 
       final dataResp = await _http.get(
         url,
@@ -3256,20 +3102,16 @@ _listaTurnos =listaIds!
     }
   }
 
-
-
 //=========================GET ALL MANTENIMIENTO =====================================//
   Future getAllMantenimiento({
-
     // BuildContext? context,
     // List? idFechas,
     String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/actualizaciones/mostrarMensaje/app');
-        
-          final dataResp = await _http.get(
+      final url = Uri.parse('$_dirURL/actualizaciones/mostrarMensaje/app');
+
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
@@ -3277,17 +3119,15 @@ _listaTurnos =listaIds!
       // final respo = jsonDecode(dataResp.body);
       //  print('RESPUESTA DE MANTENIMIENTO: ${dataResp.body} ---- ${dataResp.statusCode}');
       if (dataResp.statusCode == 404) {
-      //    Map<String, dynamic> message = jsonDecode(dataResp.body);
-      //  Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
+        //    Map<String, dynamic> message = jsonDecode(dataResp.body);
+        //  Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
         return null;
-    
       }
       if (dataResp.statusCode == 500) {
         //  Map<String, dynamic> message = jsonDecode(dataResp.body);
         //  Dialogs.alert(context!, title: 'Atención', description: '${message['msg']}');
-       
+
         return null;
-    
       }
       if (dataResp.statusCode == 200) {
         final responseData = jsonDecode(dataResp.body);
@@ -3303,14 +3143,12 @@ _listaTurnos =listaIds!
     }
   }
 
-
 //**********//
 
 //=========================GET ALL HORAS =====================================//
   Future cambiarClaveUsuario({
-
     BuildContext? context,
-    Map<String,dynamic>? data,
+    Map<String, dynamic>? data,
     int? id,
     String? token,
   }) async {
@@ -3330,23 +3168,24 @@ _listaTurnos =listaIds!
         body: jsonBody,
         encoding: encoding,
       );
-          print('la informacion para la API: ${jsonBody} -- ${token}');
+      print('la informacion para la API: ${jsonBody} -- ${token}');
       //  print('la ataResp.statusCode API: ${dataResp.statusCode}');
       if (dataResp.statusCode == 200) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
-          print('lRESPUESTA API: ${message} ');
-      
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
+        print('lRESPUESTA API: ${message} ');
+
         return message;
-    
       }
-        if (dataResp.statusCode == 404||dataResp.statusCode == 500 ||dataResp.statusCode == 403) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
-          print('lRESPUESTA API: ${message} ');
-       Dialogs.alert(context!, title: 'Información', description: '${message['msg']}');
+      if (dataResp.statusCode == 404 ||
+          dataResp.statusCode == 500 ||
+          dataResp.statusCode == 403) {
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
+        print('lRESPUESTA API: ${message} ');
+        Dialogs.alert(context!,
+            title: 'Información', description: '${message['msg']}');
         return null;
-    
       }
-      
+
       // if (dataResp.statusCode == 401) {
       //   Auth.instance.deleteSesion(context!);
 
@@ -3357,44 +3196,42 @@ _listaTurnos =listaIds!
     }
   }
 
-
 //=========================GET ALL meses de horario =====================================//
   Future getAllMesesHorario({
-
     BuildContext? context,
     String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/horarios/meses_de_horario/0');
-        
-          final dataResp = await _http.get(
+      final url = Uri.parse('$_dirURL/horarios/meses_de_horario/0');
+
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-          // print('la informacion para la API: ${dataResp.body}');
-          //  print('lsdfsdRESPUESTA API: ${dataResp.body.runtimeType} ');
-          //   List<Map<String, dynamic>> jsonList = jsonDecode(dataResp.body);
-          //       print('message API: ${jsonList.runtimeType} ');
+      // print('la informacion para la API: ${dataResp.body}');
+      //  print('lsdfsdRESPUESTA API: ${dataResp.body.runtimeType} ');
+      //   List<Map<String, dynamic>> jsonList = jsonDecode(dataResp.body);
+      //       print('message API: ${jsonList.runtimeType} ');
       //  print('la ataResp.statusCode API: ${dataResp.statusCode}');
       if (dataResp.statusCode == 200) {
         //  print('la informacion para la API: ${dataResp.body}');
         //    print('lsdfsdRESPUESTA API: ${dataResp.body.runtimeType} ');
-            // List<Map<String, dynamic>> jsonList = jsonDecode(dataResp.body);
+        // List<Map<String, dynamic>> jsonList = jsonDecode(dataResp.body);
         //         print('message API: ${jsonList.runtimeType} ');
-          // print('lRESPUESTA API: ${message.runtimeType} ');
-      
+        // print('lRESPUESTA API: ${message.runtimeType} ');
+
         return dataResp.body;
-    
       }
-        if (dataResp.statusCode == 404||dataResp.statusCode == 500 ||dataResp.statusCode == 403) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
-          // print('lRESPUESTA API: ${message} ');
-       Dialogs.alert(context!, title: 'Información', description: '${message['msg']}');
+      if (dataResp.statusCode == 404 ||
+          dataResp.statusCode == 500 ||
+          dataResp.statusCode == 403) {
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
+        // print('lRESPUESTA API: ${message} ');
+        Dialogs.alert(context!,
+            title: 'Información', description: '${message['msg']}');
         return null;
-    
       }
-      
+
       // if (dataResp.statusCode == 401) {
       //   Auth.instance.deleteSesion(context!);
 
@@ -3405,18 +3242,15 @@ _listaTurnos =listaIds!
     }
   }
 
-
 //=========================GET ALL meses de horario =====================================//
   Future getAllNotificacionesMenu({
-
     BuildContext? context,
     String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/notificaciones/grupos_notificaciones');
-        
-          final dataResp = await _http.get(
+      final url = Uri.parse('$_dirURL/notificaciones/grupos_notificaciones');
+
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
@@ -3428,21 +3262,22 @@ _listaTurnos =listaIds!
       if (dataResp.statusCode == 200) {
         //  print('la informacion para la API: ${dataResp.body}');
         //    print('lsdfsdRESPUESTA API: ${dataResp.body.runtimeType} ');
-            // List<Map<String, dynamic>> jsonList = jsonDecode(dataResp.body);
+        // List<Map<String, dynamic>> jsonList = jsonDecode(dataResp.body);
         //         print('message API: ${jsonList.runtimeType} ');
-          // print('lRESPUESTA API: ${message.runtimeType} ');
-      
+        // print('lRESPUESTA API: ${message.runtimeType} ');
+
         return dataResp.body;
-    
       }
-        if (dataResp.statusCode == 404||dataResp.statusCode == 500 ||dataResp.statusCode == 403) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
-          // print('lRESPUESTA API: ${message} ');
-       Dialogs.alert(context!, title: 'Información', description: '${message['msg']}');
+      if (dataResp.statusCode == 404 ||
+          dataResp.statusCode == 500 ||
+          dataResp.statusCode == 403) {
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
+        // print('lRESPUESTA API: ${message} ');
+        Dialogs.alert(context!,
+            title: 'Información', description: '${message['msg']}');
         return null;
-    
       }
-      
+
       // if (dataResp.statusCode == 401) {
       //   Auth.instance.deleteSesion(context!);
 
@@ -3455,49 +3290,39 @@ _listaTurnos =listaIds!
 
   //=========================GET CEDULA VISITANTE=====================================//
   Future getCedulaVisita({
-    
     String? token,
     String? search,
     String? tipo,
   }) async {
     try {
-      final url = Uri.parse('$_dirURL/personas/searchByCedulaOfRuc/0?search=$search&perfil=$tipo');
-          
+      final url = Uri.parse(
+          '$_dirURL/personas/searchByCedulaOfRuc/0?search=$search&perfil=$tipo');
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-        // print('la data de LA CEDULA :${dataResp.body} ');
+      // print('la data de LA CEDULA :${dataResp.body} ');
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
-        
-        
         print('LA CEDULA :${respo} ');
         print('LA respo-perDocNumero : ${respo['perDocNumero']} ');
         if (respo['perDocNumero'].isEmpty) {
           return null;
-        } 
-          return respo;
-       
-        
-
-
-
+        }
+        return respo;
       }
- if (dataResp.statusCode == 500) {
+      if (dataResp.statusCode == 500) {
         Map<String, dynamic> message = jsonDecode(dataResp.body);
         NotificatiosnService.showSnackBarError(message['msg']);
         return null;
       }
       if (dataResp.statusCode == 404) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
         NotificatiosnService.showSnackBarError(message['msg']);
         return null;
       }
       if (dataResp.statusCode == 401) {
-       
-
         return null;
       }
     } catch (e) {
@@ -3505,58 +3330,43 @@ _listaTurnos =listaIds!
     }
   }
 
-
-
   //=========================GET CEDULA VISITANTE=====================================//
   Future getPlacaVehiculoVisita({
-    
     String? token,
     String? placa,
-    
   }) async {
-
-   print('PLACA PARA API:${placa} ');
-
+    print('PLACA PARA API:${placa} ');
 
     try {
       final url = Uri.parse('$_dirURL/personas/searchByPlaca/0?placa=$placa');
-          
 
       final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
-        print('la data de LA paca api:${dataResp.body} ');
+      print('la data de LA paca api:${dataResp.body} ');
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
-        
-        
         // print('LA CEDULA :${respo} ');
         return respo;
-
-
-
       }
- if (dataResp.statusCode == 500) {
+      if (dataResp.statusCode == 500) {
         Map<String, dynamic> message = jsonDecode(dataResp.body);
         NotificatiosnService.showSnackBarError(message['msg']);
         return null;
       }
       if (dataResp.statusCode == 404) {
-         Map<String, dynamic> message = jsonDecode(dataResp.body);
+        Map<String, dynamic> message = jsonDecode(dataResp.body);
         NotificatiosnService.showSnackBarError(message['msg']);
         return null;
       }
       if (dataResp.statusCode == 401) {
-       
-
         return null;
       }
     } catch (e) {
       return null;
     }
   }
-
 
   //=========================GET ALL VITACORAS VISITAS =====================================//
   Future getAllBitacorasVisitas({
@@ -3565,29 +3375,23 @@ _listaTurnos =listaIds!
     String? search,
     String? tipo,
     String? idTurno,
-      
     String? notificacion,
   }) async {
-
-String _path='';
-if(tipo=='CLIENTE'||tipo=='RESIDENTE'){
-_path='$_dirURL/bitacora/cliente_residente';
-
-
-}else{
-
-_path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notificacion';
-
-
-}
+    String _path = '';
+    if (tipo == 'CLIENTE' || tipo == 'RESIDENTE') {
+      _path = '$_dirURL/bitacora/cliente_residente';
+    } else {
+      _path =
+          '$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notificacion';
+    }
 
     try {
       final url = Uri.parse(
           // '$_dirURL/bitacora/filtro/0?&search=$search&notificacion=$notificacion&regId=$idTurno');
           // '$_dirURL/bitacora/filtro/0?search&regId=1073');
-        // '$_dirURL/bitacora/cliente_residente');
-        //  '$_dirURL/$_path!');
-         _path);
+          // '$_dirURL/bitacora/cliente_residente');
+          //  '$_dirURL/$_path!');
+          _path);
 
       final dataResp = await _http.get(
         url,
@@ -3595,7 +3399,6 @@ _path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notifica
       );
 
 // print(' LA RESPUESTA DEL GET; ${dataResp.body}');
-
 
       final respo = jsonDecode(dataResp.body);
       if (dataResp.statusCode == 200) {
@@ -3615,19 +3418,18 @@ _path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notifica
     }
   }
 
-
   //=========================GET ALL CLIENTE MULTAS GUALDIAS =====================================//
 
   Future getAllVisitasResidente({
     BuildContext? context,
     String? propietario,
-      String? residente,
-        String? token,
+    String? residente,
+    String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/bitacora/misvisitantes/0?id_residente=$residente&id_propietario=$propietario');
-          final dataResp = await _http.get(
+      final url = Uri.parse(
+          '$_dirURL/bitacora/misvisitantes/0?id_residente=$residente&id_propietario=$propietario');
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
@@ -3649,44 +3451,36 @@ _path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notifica
     }
   }
 
-
 //*******************************//
 
   //=====================================GET ALL ESTUDIANTES VOLTA=====================================//
   Future getAllEstudiantesPruebaVolta(
-    // {
-    
-    // String? token,
-    // String? search,
-    // String? tipo,
-  ) async{   
-   try {
-      final dataResp = await _http.post(
-        
-          Uri.parse('https://api.ueavolta.edu.ec/api/grades/search'));
-          // body: {"usuario": usuario, "password": password, "empresa": empresa});
+      // {
+
+      // String? token,
+      // String? search,
+      // String? tipo,
+      ) async {
+    try {
+      final dataResp = await _http
+          .post(Uri.parse('https://api.ueavolta.edu.ec/api/grades/search'));
+      // body: {"usuario": usuario, "password": password, "empresa": empresa});
       final respo = jsonDecode(dataResp.body);
       print('LA  API :${respo}');
-       print('LA  API :${respo.runtimeType}');
+      print('LA  API :${respo.runtimeType}');
       //   print('EL code  API :${dataResp.statusCode}');
 
       if (dataResp.statusCode == 404 || dataResp.statusCode == 500) {
-      //  snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        //  snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
         return null;
       }
       if (dataResp.statusCode == 200) {
-       
         return respo;
       }
-      
     } catch (e) {
       print('-ERROR -> $e');
     }
-  
   }
-
-
-
 
   //=========================GET ALL AUSENCIAS DE LOS  GUARDIAS =====================================//
   Future getAllCierreBitacoras({
@@ -3694,8 +3488,7 @@ _path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notifica
     String? token,
   }) async {
     try {
-      final url = Uri.parse(
-          '$_dirURL/bitacora_cierre/listarByCliente');
+      final url = Uri.parse('$_dirURL/bitacora_cierre/listarByCliente');
 
       final dataResp = await _http.get(
         url,
@@ -3761,37 +3554,33 @@ _path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notifica
     }
   }
 
-
-
-
-
   //=========================GET ALL CLIENTE MULTAS GUALDIAS =====================================//
 
   Future getPersonaResidente({
     BuildContext? context,
     String? documento,
-      String? tipo,
-         String? perfil,
-        String? token,
+    String? tipo,
+    String? perfil,
+    String? token,
   }) async {
     try {
-      final url =
-          Uri.parse('$_dirURL/personas/searchByCedulaOfRuc/0?search=$documento&perfil=$perfil&tipoDocumento=$tipo');
-          final dataResp = await _http.get(
+      final url = Uri.parse(
+          '$_dirURL/personas/searchByCedulaOfRuc/0?search=$documento&perfil=$perfil&tipoDocumento=$tipo');
+      final dataResp = await _http.get(
         url,
         headers: {"x-auth-token": '$token'},
       );
       final respo = jsonDecode(dataResp.body);
-       print(' LA RESPUESTA DEL BUSQUEDA ; ${respo}');
+      print(' LA RESPUESTA DEL BUSQUEDA ; ${respo}');
       //   print(' LA RESPUESTA DEL BUSQUEDA ; ${dataResp.statusCode}');
       if (dataResp.statusCode == 200) {
         return respo;
       }
       if (dataResp.statusCode == 404 || dataResp.statusCode == 500) {
-       snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
         return null;
       }
-      
+
       if (dataResp.statusCode == 401) {
         // Auth.instance.deleteSesion(context!);
 
@@ -3802,59 +3591,121 @@ _path='$_dirURL/bitacora/cliente_residente?search=$search&notificacion=$notifica
     }
   }
 
-
 //**************** NUEVA FORMA DE ENVIO DE IMAGENES AL SERVER  DE MANERA INDIVIDUAL ***************//
 
- //=========================ENVIA LOS URLTEMPORALES =====================================//
+  //=========================ENVIA LOS URLTEMPORALES =====================================//
 
-Future saveUrlIndividualServidor({ BuildContext? context,File? urlFile, String? token}) async {
-  try {
-     var request = _http.MultipartRequest(
-        'POST', Uri.parse('https://backsafe.neitor.com/api/bucket/upload'));
+  Future saveUrlIndividualServidor(
+      {BuildContext? context, File? urlFile, String? token}) async {
+    try {
+      var request = _http.MultipartRequest(
+          'POST', Uri.parse('https://backsafe.neitor.com/api/bucket/upload'));
 
-    //for token
-    request.headers.addAll({"x-auth-token": '$token'});
+      //for token
+      request.headers.addAll({"x-auth-token": '$token'});
 
-    request.files
-        .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
+      request.files
+          .add(await _http.MultipartFile.fromPath('foto', urlFile!.path));
 
-    //for completeing the request
-    var response = await request.send();
+      //for completeing the request
+      var response = await request.send();
 
-    //for getting and decoding the response into json format
-    var responsed = await _http.Response.fromStream(response);
-    // final responseData = json.decode(responsed.body);
+      //for getting and decoding the response into json format
+      var responsed = await _http.Response.fromStream(response);
+      // final responseData = json.decode(responsed.body);
 // print('LISTA SERVER: ${responsed.body}');
       if (responsed.statusCode == 404) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "No se puede agregar Contenido");
 
         return null;
-      
       }
       if (responsed.statusCode == 200) {
-      final responseFoto = FotoUrl.fromJson(responsed.body);
-      // print('LISTA foto: ${responseFoto.urls[0].url}');
-     return  responseFoto.urls[0].url;
+        final responseFoto = FotoUrl.fromJson(responsed.body);
+        // print('LISTA foto: ${responseFoto.urls[0].url}');
+        return responseFoto.urls[0].url;
       }
       if (responsed.statusCode == 401) {
         snaks.NotificatiosnService.showSnackBarDanger(
             "Debe inciar sesión nuevamente");
 
         return null;
-
       }
-
-
-
-  } catch (e) {
- return null;
+    } catch (e) {
+      return null;
+    }
   }
 
-   
+//**************** INICIA TURNO ***************//
+  Future startTurno(Map<String, dynamic> data, String token) async {
+    try {
+      final uri = Uri.parse('$_dirURL/registros/iniciar_turno');
+      final headers = {
+        'Content-Type': 'application/json',
+        "x-auth-token": token,
+      };
+      // print('data a enviar =======>: $data');
+      Map<String, dynamic> body = data;
+      String jsonBody = json.encode(body);
+      final encoding = Encoding.getByName('utf-8');
 
-}
+      final dataResp = await _http.post(
+        uri,
+        headers: headers,
+        body: jsonBody,
+        encoding: encoding,
+      );
+      final respo = jsonDecode(dataResp.body);
 
+      // print('EL verifiv  API :${respo}');
+      // print('EL code  API :${dataResp.statusCode}');
 
+      if (dataResp.statusCode != 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return respo;
+      }
+    } catch (e) {
+      return null;
+    }
+  }
 
+//**************** FINALIZA TURNO ***************//
+
+  Future endTurno(Map<String, dynamic> data, String token) async {
+    try {
+      final uri = Uri.parse('$_dirURL/registros/finalizar_turno');
+      final headers = {
+        'Content-Type': 'application/json',
+        "x-auth-token": token,
+      };
+
+      final jsonBody = jsonEncode(data); // Codifica a JSON (simplificado)
+
+      final dataResp = await _http.put(
+        // Usa http.put en lugar de post
+        uri,
+        headers: headers,
+        body: jsonBody,
+      );
+
+      final respo = jsonDecode(dataResp.body);
+
+      if (dataResp.statusCode != 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return null;
+      }
+      if (dataResp.statusCode == 200) {
+        snaks.NotificatiosnService.showSnackBarDanger("${respo["msg"]}");
+        return respo;
+      }
+      return null; // Retorno en caso de que no se cumpla la condición del statusCode 200
+    } catch (e) {
+      print("Error en la petición PUT: $e"); // Imprime el error para debug
+      return null;
+    }
+  }
 }
